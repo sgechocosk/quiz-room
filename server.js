@@ -8,10 +8,6 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 
-app.get("/", (req, res) => {
-  res.send("OK");
-});
-
 io.on('connection', (socket) => {
     console.log('🔌 ユーザーが接続しました');
 
