@@ -6,6 +6,14 @@ const rooms = {};
 
 const PORT = process.env.PORT || 3000;
 
+app.get("/", (req, res) => {
+  res.send("OK");
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
 app.use(express.static('public'));
 
 io.on('connection', (socket) => {
