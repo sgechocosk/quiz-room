@@ -71,8 +71,9 @@ io.on('connection', (socket) => {
 
     // リセット
     socket.on('reset', (room) => {
-        if (rooms[room]) {
-            rooms[room].buzzList = [];
+        const roomData = rooms[room];
+        if (roomData && roomData.hostId === socket.id) {
+            roomData.buzzList = [];
             io.to(room).emit('buzz-list', []);
         }
     });
@@ -90,7 +91,8 @@ io.on('connection', (socket) => {
 
     // ルーム解散
     socket.on('end-room', (room) => {
-        if (rooms[room]) {
+        const roomData = rooms[room];
+        if (roomData && roomData.hostId === socket.id) {
             // 全員にルーム解散通知（アラート表示させる用）
             socket.to(room).emit('room-ended', false); // false → ホスト以外
             // ホスト本人にも通知（アラート無しでUIだけリセット）
@@ -100,30 +102,31 @@ io.on('connection', (socket) => {
         }
     });
 
-
-    // 切断時の処理（必要であれば）
+    // 切断時の処理
     socket.on('disconnect', () => {
         console.log('❌ ユーザーが切断しました');
+        
         for (const room in rooms) {
             const roomData = rooms[room];
             
-            // 参加者かホストか探す
-            const isParticipant = roomData.participants.find(p => p.id === socket.id);
-            if (isParticipant) {
-                roomData.participants = roomData.participants.filter(p => p.id !== socket.id);
-                roomData.buzzList = roomData.buzzList.filter(name => name !== isParticipant.name);
-                io.to(room).emit('buzz-list', roomData.buzzList);
-            }
-    
+            // ホストが切断された場合
             if (roomData.hostId === socket.id) {
-                // ホストが切断されたら部屋を解散
-                io.to(room).emit('room-ended');
+                // 参加者全員にルーム解散通知
+                socket.to(room).emit('room-ended', false);
                 delete rooms[room];
+                continue; // 次のルームへ
             }
-    
-            // 参加者もホストもいなくなったら部屋を削除
-            if (roomData.participants.length === 0 && !roomData.hostId) {
-                delete rooms[room];
+            
+            // 参加者が切断された場合
+            const participantIndex = roomData.participants.findIndex(p => p.id === socket.id);
+            if (participantIndex !== -1) {
+                const participantName = roomData.participants[participantIndex].name;
+                // 参加者リストから削除
+                roomData.participants.splice(participantIndex, 1);
+                // バズリストからも削除
+                roomData.buzzList = roomData.buzzList.filter(name => name !== participantName);
+                // 更新されたバズリストを送信
+                io.to(room).emit('buzz-list', roomData.buzzList);
             }
         }
     });
