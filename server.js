@@ -36,12 +36,12 @@ io.on('connection', (socket) => {
             return;
         }
 
-        // 参加者数制限（例：150人まで）
+        // 参加者数制限（150人まで）
         if (roomData.participants.length >= 150) {
             socket.emit('room-full');
             return;
         }
-    
+
         socket.join(room); // 部屋に参加(参加者)
         rooms[room].participants.push({ id: socket.id, name });
         socket.emit('buzz-list', rooms[room].buzzList);
@@ -101,10 +101,15 @@ io.on('connection', (socket) => {
     // ルーム解散
     socket.on('end-room', (room) => {
         if (rooms[room]) {
-            io.to(room).emit('room-ended');
+            // 全員にルーム解散通知（アラート表示させる用）
+            socket.to(room).emit('room-ended', false); // false → ホスト以外
+            // ホスト本人にも通知（アラート無しでUIだけリセット）
+            socket.emit('room-ended', true); // true → ホスト自身
+
             delete rooms[room];
         }
     });
+
 
     // 切断時の処理（必要であれば）
     socket.on('disconnect', () => {
