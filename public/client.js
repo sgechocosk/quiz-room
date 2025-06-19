@@ -141,8 +141,10 @@ socket.on("buzz-list", (list) => {
 });
 
 // ルーム解散（resetUI関数使用）
-socket.on("room-ended", () => {
-    alert("ルームが解散されました");
+socket.on("room-ended", (isInitiator) => {
+    if (!isInitiator) {
+        alert("ルームが解散されました");
+    }
     resetUI();
 });
 
