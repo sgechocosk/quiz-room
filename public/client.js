@@ -45,31 +45,22 @@ function exitRoom(isHost = false) {
     resetUI();
 }
 
-// 新しく追加：リスト更新を統一化
-function updateBuzzList(list) {
-    const olHost = document.getElementById("buzzList_host");
-    const olPart = document.getElementById("buzzList");
+function createListItems(list, container) {
+    if (!container) return;
+    
+    container.innerHTML = "";
     const totalSlots = Math.max(list.length, 5);
-
-    // ホスト用リスト更新
-    if (olHost) {
-        olHost.innerHTML = "";
-        for (let i = 0; i < totalSlots; i++) {
-            const li = document.createElement("li");
-            li.textContent = list[i] || "";
-            olHost.appendChild(li);
-        }
+    
+    for (let i = 0; i < totalSlots; i++) {
+        const li = document.createElement("li");
+        li.textContent = list[i] || "";
+        container.appendChild(li);
     }
+}
 
-    // 参加者用リスト更新
-    if (olPart) {
-        olPart.innerHTML = "";
-        for (let i = 0; i < totalSlots; i++) {
-            const li = document.createElement("li");
-            li.textContent = list[i] || "";
-            olPart.appendChild(li);
-        }
-    }
+function updateBuzzList(list) {
+    createListItems(list, document.getElementById("buzzList_host"));
+    createListItems(list, document.getElementById("buzzList"));
 }
 
 // 新しく追加：ローディング状態管理
