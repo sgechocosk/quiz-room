@@ -14,6 +14,45 @@
     }
 }
 
+/* スマホ画面幅が 600px 以下のときに適用 */
+@media screen and (max-width: 600px) {
+  body {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  h1, h2, h3 {
+    font-size: 1.2em;
+    text-align: center;
+  }
+
+  #start-area input,
+  #start-area button,
+  .flat-button {
+    width: 100%;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .buzz-button {
+    width: 80vw;
+    height: 80vw;
+    font-size: 1.5rem;
+  }
+
+  .btn-refresh,
+  .btn-exit {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  #buzzListArea,
+  #buzzListArea_participant {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+}
+
 button:focus:not(:focus-visible) {
     outline: none;
 }
