@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>クイズ早押しボタン</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="images/icon.png" type="image/png">
+</head>
+<body>
+    <h1>クイズルーム</h1>
+
+    <!-- 最初の選択エリア -->
+    <div id="start-area">
+        <input type="text" id="nameInput" placeholder="名前を入力" />
+        <input type="text" id="roomInput" placeholder="5桁のルームID" maxlength="5" />
+        <br><br>
+        <button id="joinBtn" class="flat-button join-button"><span>ルームに参加</span></button>
+        <br><br>
+        <button id="createRoomBtn" class="flat-button create-button"><span>ルームを作成</span></button>
+    </div>
+
+    <!-- 出題者用の画面 -->
+    <div id="host-area" style="display: none;">
+        <h2 id="hostRoomDisplay"></h2>
+        <div id="buzzListArea">
+            <h3>回答者</h3>
+            <ol id="buzzList_host"></ol>
+        </div>
+        <button id="resetBtn" class="btn-refresh" title="更新"><span>↻</span></button>
+        <button id="endBtn" class="btn-exit"><span>ルーム解散</span></button>
+    </div>
+
+    <!-- 参加者用の画面 -->
+    <div id="participant-area" style="display: none;">
+        <h2 id="roomDisplay"></h2>
+        <h3 id="userDisplay"></h3>
+        <button id="buzzBtn" class="buzz-button">
+            <span class="buzz-button-bottom"></span>
+            <span class="buzz-button-top"><span>回答</span></span>
+        </button>
+        <div id="buzzListArea_participant">
+            <h3>回答者</h3>
+            <ol id="buzzList"></ol>
+        </div>
+        <button id="leaveBtn" class="btn-exit"><span>退出</span></button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
+</body>
+</html>
