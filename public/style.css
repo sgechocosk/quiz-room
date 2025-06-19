@@ -320,18 +320,3 @@ button.btn-refresh:hover {
     box-shadow: 0 5px 8px rgba(0, 0, 0, .4);
     line-height: 55px;
 }
-
-.back-button {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    padding: 10px 20px;
-    background: #f0f0f0;
-    border: 1px solid #ccc;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.back-button:hover {
-    background: #e0e0e0;
-}
