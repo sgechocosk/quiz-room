@@ -53,6 +53,14 @@
   }
 }
 
+input[type="text"] {
+  width: 100%;
+  font-size: 1rem;
+  padding: 10px;
+  margin: 5px 0;
+  box-sizing: border-box;
+}
+
 button:focus:not(:focus-visible) {
     outline: none;
 }
