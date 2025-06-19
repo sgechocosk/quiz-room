@@ -11,16 +11,6 @@ app.use(express.static('public'));
 io.on('connection', (socket) => {
     console.log('🔌 ユーザーが接続しました');
 
-    function cleanupRoom(roomId) {
-        const roomData = rooms[roomId];
-        if (!roomData) return;
-        
-        if (roomData.participants.length === 0 && !roomData.hostId) {
-            delete rooms[roomId];
-            console.log(`🗑️ ルーム ${roomId} を削除しました`);
-        }
-    }
-
     // ルーム存在確認
     socket.on('check-room', ({ name, room }) => {
         const roomData = rooms[room];
